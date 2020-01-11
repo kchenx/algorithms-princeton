@@ -1,0 +1,4 @@
+INDEX VERSION 1.131+/Users/kchen/code/courses/algorithms/.metadata/.plugins/org.eclipse.jdt.core
+352518825.index
+4003140574.index
+3622984261.index
