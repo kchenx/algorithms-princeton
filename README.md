@@ -1,6 +1,7 @@
 # Solved Problems for Princeton's "Algorithms"
 
-Solves problems in Princeton's online Coursera courses "Algorithms, Part I" and "Algorithms, Part II"
+Solves problems for Princeton's online Coursera courses "Algorithms, Part I" and "Algorithms, Part II."
+Each folder contains a PDF of the problem and my solution.
 
 Applied concepts include (in order):
 1. Union-find
