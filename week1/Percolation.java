@@ -19,13 +19,13 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
 
-    private boolean[][] m;
+    private final boolean[][] m;
     private final int n;
     private final WeightedQuickUnionUF uf;
     private int nopen = 0;
 
     // creates n-by-n grid, with all sites initially blocked
-    public Percolation(int n) {
+    public Percolation(final int n) {
         if (n <= 0) {
             throw new IllegalArgumentException("n must be positive");
         }
@@ -39,21 +39,21 @@ public class Percolation {
 
         this.n = n;
 
-        uf = new WeightedQuickUnionUF(n*n + 2);
+        uf = new WeightedQuickUnionUF(n * n + 2);
 
         // connect top row to source
         for (int i = 0; i < n; i++) {
-            uf.union(i, n*n);
+            uf.union(i, n * n);
         }
 
         // connect bottom row to sink
-        for (int i = n*(n-1); i < n*n; i++) {
-            uf.union(i, n*n + 1);
+        for (int i = n * (n - 1); i < n * n; i++) {
+            uf.union(i, n * n + 1);
         }
     }
 
     // opens the site (row, col) if it is not open already
-    public void open(int row, int col) {
+    public void open(final int row, final int col) {
         if (isOpen(row, col)) {
             return;
         }
@@ -76,7 +76,7 @@ public class Percolation {
     }
 
     // is the site (row, col) open?
-    public boolean isOpen(int row, int col) {
+    public boolean isOpen(final int row, final int col) {
         if (!validateIndices(row, col)) {
             throw new IllegalArgumentException("Out of bounds");
         }
@@ -85,12 +85,12 @@ public class Percolation {
     }
 
     // is the site (row, col) full?
-    public boolean isFull(int row, int col) {
+    public boolean isFull(final int row, final int col) {
         if (!validateIndices(row, col)) {
             throw new IllegalArgumentException("Out of bounds");
         }
 
-        return (isOpen(row, col)) && (uf.find(xyTo1D(row, col)) == uf.find(n*n));
+        return (isOpen(row, col)) && (uf.find(xyTo1D(row, col)) == uf.find(n * n));
     }
 
     // returns the number of open sites
@@ -103,21 +103,21 @@ public class Percolation {
         if (n == 1) {
             return isOpen(1, 1);
         }
-        return uf.find(n*n) == uf.find(n*n + 1);
+        return uf.find(n * n) == uf.find(n * n + 1);
     }
 
     // converts (row, col) to index for Union-Find
-    private int xyTo1D(int row, int col) {
+    private int xyTo1D(final int row, final int col) {
         return (row - 1) * n + (col - 1);
     }
 
     // returns true iff indices are valid
-    private boolean validateIndices(int row, int col) {
+    private boolean validateIndices(final int row, final int col) {
         return row > 0 && col > 0 && row <= n && col <= n;
     }
 
     // test client (optional)
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         return;
     }
 }
