@@ -4,3 +4,4 @@ Solves problems in Princeton's online Coursera courses "Algorithms, Part I" and 
 
 Applied concepts include (in order):
 1. Union-find
+2. Queues
