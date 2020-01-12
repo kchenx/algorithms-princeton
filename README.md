@@ -6,3 +6,4 @@ Each folder contains a PDF of the problem and my solution.
 Applied concepts include (in order):
 1. Union-find
 2. Queues
+3. Sorting
