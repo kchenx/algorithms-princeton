@@ -1,7 +1,7 @@
 /******************************************************************************
  *  Compilation:  javac PercolationStats.java
  *  Execution:    java PercolationStats n T
- *  Dependencies: Percolation.java
+ *  Dependencies: Percolation.java StdRandom.java
  *
  *  This program takes two integers `n` and `T` as arguments.
  *  Then, it performs `T` Monte Carlo simulations as such:
@@ -24,12 +24,19 @@ public class PercolationStats {
 
     private static final double CONFIDENCE_95 = 1.96;
 
-    private final double[] results;
-    private final int ntrials;
+    private final int ntrials;      // number of trials
+    private final double[] results; // list of percolation thresholds
     private double mean = -1;
     private double stddev = -1;
 
-    // perform independent trials on an n-by-n grid
+    /**
+     * Performs <tt>trials</tt> independent trials on an <tt>n</tt>-by-<tt>n</tt>
+     * percolation system. Adds the percolation threshold of each trial to 
+     * <tt>results</tt>.
+     * 
+     * @param n      dimension of grid
+     * @param trials number of trials to perform
+     */
     public PercolationStats(int n, int trials) {
         if (n <= 0 || trials <= 0) {
             throw new IllegalArgumentException("n must be positive");
@@ -49,7 +56,11 @@ public class PercolationStats {
         }
     }
 
-    // sample mean of percolation threshold
+    /**
+     * Calculates sample mean of percolation threshold
+     * 
+     * @return sample mean of percolation threshold
+     */
     public double mean() {
         if (mean == -1) {
             mean = StdStats.mean(results);
@@ -57,7 +68,11 @@ public class PercolationStats {
         return mean;
     }
 
-    // sample standard deviation of percolation threshold
+    /**
+     * Calculates sample standard deviation of percolation threshold
+     * 
+     * @return sample standard deviation of percolation threshold
+     */
     public double stddev() {
         if (ntrials == 1) {
             return Double.NaN;
@@ -68,17 +83,25 @@ public class PercolationStats {
         return stddev;
     }
 
-    // low endpoint of 95% confidence interval
+    /**
+     * Calculates low endpoint of 95% confidence interval of percolation threshold
+     * 
+     * @return low endpoint of 95% confidence interval
+     */
     public double confidenceLo() {
         return mean() - CONFIDENCE_95 * stddev() / Math.sqrt(ntrials);
     }
 
-    // high endpoint of 95% confidence interval
+    /**
+     * Calculates high endpoint of 95% confidence interval of percolation threshold
+     * 
+     * @return high endpoint of 95% confidence interval
+     */
     public double confidenceHi() {
         return mean() + CONFIDENCE_95 * stddev() / Math.sqrt(ntrials);
     }
 
-    // test client (see below)
+    // test client
     public static void main(String[] args) {
         if (args.length != 2) {
             System.out.println("Usage: PercolationStats gridsize ntrials");

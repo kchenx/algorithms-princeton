@@ -26,7 +26,12 @@ public class PercolationVisualizer {
     // delay in miliseconds (controls animation speed)
     private static final int DELAY = 100;
 
-    // draw n-by-n percolation system
+    /**
+     * Draws <tt>n</tt>-by-<tt>n</tt> percolation system.
+     * 
+     * @param perc percolation system to draw
+     * @param n    dimension of percolation system
+     */
     public static void draw(Percolation perc, int n) {
         StdDraw.clear();
         StdDraw.setPenColor(StdDraw.BLACK);

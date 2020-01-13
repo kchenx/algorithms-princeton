@@ -1,8 +1,10 @@
 /******************************************************************************
  *  Compilation:  javac Deque.java
  *  Execution:    java Deque
+ *  Dependencies: none
  *
- *  This program implements a deque class and runs unit tests in `main`.
+ *  This program implements a deque class as a doubly-linked list and runs 
+ *  unit tests in `main`.
  *
  ******************************************************************************/
 
@@ -12,13 +14,10 @@ import edu.princeton.cs.algs4.StdOut;
 
 public class Deque<Item> implements Iterable<Item> {
 
-    // first and last items in deque as doubly-linked list
-    private Node first, last;
+    private Node first, last; // first and last items in deque
 
-    // number of items in deque
-    private int nitems = 0;
+    private int nitems = 0;   // number of items in deque
 
-    // node class
     private class Node {
         Item item;
         Node prev;
@@ -29,22 +28,30 @@ public class Deque<Item> implements Iterable<Item> {
         }
     }
 
-    // construct an empty deque
-    public Deque() {
-        return;
-    }
-
-    // is the deque empty?
+    /**
+     * Calculates if the deque is empty.
+     * 
+     * @return true iff the deque is empty.
+     */
     public boolean isEmpty() {
         return first == null;
     }
 
-    // return the number of items on the deque
+    /**
+     * Calculates the number of items in the deque.
+     * 
+     * @return number of items in the deque
+     */
     public int size() {
         return nitems;
     }
 
-    // add the item to the front
+    /**
+     * Adds the item to the front of the deque.
+     * 
+     * @param  item                     item to be added to the front
+     * @throws IllegalArgumentException if the item is null
+     */
     public void addFirst(Item item) {
         if (item == null) {
             throw new IllegalArgumentException();
@@ -63,7 +70,12 @@ public class Deque<Item> implements Iterable<Item> {
         nitems++;
     }
 
-    // add the item to the back
+    /**
+     * Adds the item to the back of the deque.
+     * 
+     * @param  item                     item to be added to the back
+     * @throws IllegalArgumentException if the item is null
+     */
     public void addLast(Item item) {
         if (item == null) {
             throw new IllegalArgumentException();
@@ -82,7 +94,12 @@ public class Deque<Item> implements Iterable<Item> {
         nitems++;
     }
 
-    // remove and return the item from the front
+    /**
+     * Removes and returns the item at the front of the deque.
+     * 
+     * @return                        item at the front
+     * @throws NoSuchElementException if deque is empty
+     */
     public Item removeFirst() {
         if (isEmpty()) {
             throw new NoSuchElementException();
@@ -100,7 +117,12 @@ public class Deque<Item> implements Iterable<Item> {
         return n.item;
     }
 
-    // remove and return the item from the back
+    /**
+     * Removes and returns the item at the back of the deque.
+     * 
+     * @return                        item at the back
+     * @throws NoSuchElementException if deque is empty
+     */
     public Item removeLast() {
         if (isEmpty()) {
             throw new NoSuchElementException();
@@ -117,8 +139,10 @@ public class Deque<Item> implements Iterable<Item> {
         nitems--;
         return n.item;
     }
-
-    // return an iterator over items in order from front to back
+    
+    /**
+     * Returns an interator over the elements in the deque from front to back.
+     */
     public Iterator<Item> iterator() {
         return new DequeIterator();
     }

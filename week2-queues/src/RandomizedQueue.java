@@ -1,8 +1,10 @@
 /******************************************************************************
  *  Compilation:  javac RandomizedQueue.java
  *  Execution:    java RandomizedQueue
+ *  Dependencies: StdRandom.java
  *
- *  This program implements a randomized queue class and runs unit tests in `main`.
+ *  This program implements a randomized queue class as an self-expanding array 
+ *  and runs unit tests in `main`.
  *
  ******************************************************************************/
 
@@ -13,68 +15,90 @@ import edu.princeton.cs.algs4.StdOut;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
-    // queue as array
-    private Item[] q;
 
-    // number of items in queue
-    private int nitems = 0;
+    private Item[] rq;        // randomized queue
+    private int nitems = 0;  // number of items in queue
 
-    // construct an empty randomized queue
     public RandomizedQueue() {
-        q = (Item[]) new Object[1];
+        rq = (Item[]) new Object[1];
     }
 
-    // is the randomized queue empty?
+    /**
+     * Calculates if the randomized queue is empty.
+     * 
+     * @return true iff the randomized queue is empty.
+     */
     public boolean isEmpty() {
         return nitems == 0;
     }
 
-    // return the number of items on the randomized queue
+    /**
+     * Calculates the number of items in the randomized queue
+     * 
+     * @return number of items on the randomized queue
+     */
     public int size() {
         return nitems;
     }
 
-    // add the item
+    /**
+     * Adds an item to the randomized queue
+     * 
+     * @param  item                     item to be added
+     * @throws IllegalArgumentException if the item is null
+     */
     public void enqueue(Item item) {
         if (item == null) {
             throw new IllegalArgumentException();
         }
 
-        if (nitems == q.length) {
-            resize(2 * q.length);
+        if (nitems == rq.length) {
+            resize(2 * rq.length);
         }
 
-        q[nitems++] = item;
+        rq[nitems++] = item;
     }
 
-    // remove and return a random item
+    /**
+     * Remove and return an item in the queue selected uniformly at random
+     * 
+     * @return                        item in the queue selected uniformly at random
+     * @throws NoSuchElementException if the queue is empty
+     */
     public Item dequeue() {
         if (isEmpty()) {
             throw new NoSuchElementException();
         }
 
-        if (nitems <= q.length / 4) {
-            resize(q.length / 2);
+        if (nitems <= rq.length / 4) {
+            resize(rq.length / 2);
         }
 
         int i = StdRandom.uniform(nitems);
-        Item temp = q[i];
-        q[i] = q[--nitems];
-        q[nitems] = null;
+        Item temp = rq[i];
+        rq[i] = rq[--nitems];
+        rq[nitems] = null;
         return temp;
     }
 
-    // return a random item (but do not remove it)
+    /**
+     * Returns an item in the queue selected uniformly at random without removing it.
+     * 
+     * @return                        item in the queue selected uniformly at random
+     * @throws NoSuchElementException if the queue is empty
+     */
     public Item sample() {
         if (isEmpty()) {
             throw new NoSuchElementException();
         }
 
         int i = StdRandom.uniform(nitems);
-        return q[i];
+        return rq[i];
     }
 
-    // return an independent iterator over items in random order
+    /**
+     * Returns an independent iterator over the items in the queue in random order
+     */
     public Iterator<Item> iterator() {
         return new RandomizedQueueIterator();
     }
@@ -100,17 +124,21 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            return q[order[current++]];
+            return rq[order[current++]];
         }
     }
 
-    // resize stack array to size `capacity`
+    /**
+     * Resizes the randomized queue to the size <tt>capacity</tt>
+     * 
+     * @param capacity the new size of the queue
+     */
     private void resize(int capacity) {
         Item[] copy = (Item[]) new Object[capacity];
         for (int i = 0; i < nitems; i++) {
-            copy[i] = q[i];
+            copy[i] = rq[i];
         }
-        q = copy;
+        rq = copy;
     }
 
     private static void printTest(int n, boolean result) {

@@ -1,6 +1,7 @@
 /******************************************************************************
  *  Compilation:  javac Percolation.java
  *  Execution:    java Percolation
+ *  Dependencies: WeightedQuickUnionUF.java
  *
  *  This program implements a class which models the percolation problem:
  *
@@ -35,32 +36,34 @@ public class Percolation {
 
     // union-find structure to see if system percolates
     private WeightedQuickUnionUF uf;
-    
+
     // union-find structure to see if node full
     private WeightedQuickUnionUF ufNoBackwash;
-    
-    // virtual node to be attached to top sites
+
+    // virtual nodes
     private final int topVirtualNode;
-    
-    // virtual node to be attached to bottom sites
     private final int bottomVirtualNode;
-    
+
     // grid to check if site is open: a site is open iff true
     private boolean[][] m;
-    
-    // number of sites open
-    private int nopen = 0;
-    
-    // size of grid: percolation system is `n`-by-`n`
-    private final int n;
-    
 
-    // creates n-by-n grid, with all sites initially blocked
+    // number of open sites
+    private int nopen = 0;
+
+    // dimension of n-by-n grid
+    private final int n;
+
+    /**
+     * Creates <tt>n</tt>-by-<tt>n</tt> percolation system, with all sites
+     * initially blocked.
+     * 
+     * @param n dimension of n-by-n grid
+     */
     public Percolation(final int n) {
         if (n <= 0) {
             throw new IllegalArgumentException("n must be positive");
         }
-        
+
         ufNoBackwash = new WeightedQuickUnionUF(n * n + 2);
         uf = new WeightedQuickUnionUF(n * n + 2);
 
@@ -71,7 +74,13 @@ public class Percolation {
         bottomVirtualNode = n * n + 1;
     }
 
-    // opens the site (row, col) if it is not open already
+    /**
+     * Opens the site with indices (<tt>row</tt>, <tt>col</tt>)
+     * if it is not already open.
+     * 
+     * @param row row index
+     * @param col col index
+     */
     public void open(final int row, final int col) {
         if (isOpen(row, col)) {
             return;
@@ -79,7 +88,7 @@ public class Percolation {
 
         m[row][col] = true;
         nopen++;
-        
+
         // connect to adjacent nodes if they exist
         if (row > 1 && isOpen(row - 1, col)) {
             unionToBoth(xyTo1D(row - 1, col), xyTo1D(row, col));
@@ -93,7 +102,7 @@ public class Percolation {
         if (col < n && isOpen(row, col + 1)) {
             unionToBoth(xyTo1D(row, col + 1), xyTo1D(row, col));
         }
-        
+
         // connect to virtual nodes if appropriate
         if (row == 1) {
             unionToBoth(xyTo1D(row, col), topVirtualNode);
@@ -103,7 +112,13 @@ public class Percolation {
         }
     }
 
-    // is the site (row, col) open?
+    /**
+     * Checks if the site with indices (<tt>row</tt>, <tt>col</tt>) is open.
+     * 
+     * @param  row row index
+     * @param  col col index
+     * @return     true iff the site (<tt>row</tt>, <tt>col</tt>) is open
+     */
     public boolean isOpen(final int row, final int col) {
         if (!inRange(row, col)) {
             throw new IllegalArgumentException("Out of bounds");
@@ -112,21 +127,40 @@ public class Percolation {
         return m[row][col];
     }
 
-    // is the site (row, col) full?
+    /**
+     * Checks if the site (<tt>row</tt>, <tt>col</tt>) is full.
+     * A "full" site is an open site that can be connected to an open site 
+     * in the top row via a chain of neighboring (left, right, up, down) 
+     * open sites.
+     * 
+     * @param  row row index
+     * @param  col col index
+     * @return     true iff the site (<tt>row</tt>, <tt>col</tt>) is full
+     */
     public boolean isFull(final int row, final int col) {
         if (!inRange(row, col)) {
             throw new IllegalArgumentException("Out of bounds");
         }
 
-        return (isOpen(row, col)) && (ufNoBackwash.find(xyTo1D(row, col)) == ufNoBackwash.find(topVirtualNode));
+        return (isOpen(row, col)) && (ufNoBackwash.find(xyTo1D(row, col))
+                == ufNoBackwash.find(topVirtualNode));
     }
 
-    // returns the number of open sites
+    /**
+     * Calculates the number of open sites.
+     * 
+     * @return number of open sites
+     */
     public int numberOfOpenSites() {
         return nopen;
     }
 
-    // does the system percolate?
+    /**
+     * Calculates if the system percolates.
+     * A system "percolates" iff there is a full site in the bottom row.
+     * 
+     * @return true iff the system percolates
+     */
     public boolean percolates() {
         if (n == 1) {
             return isOpen(1, 1);
@@ -134,23 +168,44 @@ public class Percolation {
         return uf.find(topVirtualNode) == uf.find(bottomVirtualNode);
     }
 
-    // converts (row, col) to index for Union-Find
+    /**
+     * Converts (<tt>row</tt>, <tt>col</tt>) indices (which are 1-based)
+     * to a single 0-based index for Union-Find structure.
+     * 
+     * @param row row index
+     * @param col col index
+     * @return    index for Union-Find
+     */
     private int xyTo1D(final int row, final int col) {
         return (row - 1) * n + (col - 1);
     }
 
-    // returns true iff indices are valid
+    /**
+     * Calculates if indices are "valid": within the range of the percolation
+     * system.
+     * 
+     * @param row row index
+     * @param col col index
+     * @return    true iff indices are valid
+     */
     private boolean inRange(final int row, final int col) {
         return row > 0 && col > 0 && row <= n && col <= n;
     }
-    
-    // unions to both `uf` and `ufNoBackwash` structures
+
+    /**
+     * Merges the set containing the element <tt>p</tt> with the set
+     * containing the element <tt>q</tt> in both the <tt>uf</tt> and
+     * <tt>ufNoBackwash</tt> union-find structures.
+     * 
+     * @param p one element
+     * @param q the other element
+     */
     private void unionToBoth(int p, int q) {
         uf.union(p, q);
         ufNoBackwash.union(p, q);
     }
 
-    // test client (optional)
+    // test client (see PercolationStats.java)
     public static void main(final String[] args) {
         return;
     }
