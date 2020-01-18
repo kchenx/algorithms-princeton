@@ -23,7 +23,6 @@ public class Point implements Comparable<Point> {
      * @param  y the <em>y</em>-coordinate of the point
      */
     public Point(int x, int y) {
-        /* DO NOT MODIFY */
         this.x = x;
         this.y = y;
     }
@@ -32,7 +31,6 @@ public class Point implements Comparable<Point> {
      * Draws this point to standard draw.
      */
     public void draw() {
-        /* DO NOT MODIFY */
         StdDraw.point(x, y);
     }
 
@@ -43,7 +41,6 @@ public class Point implements Comparable<Point> {
      * @param that the other point
      */
     public void drawTo(Point that) {
-        /* DO NOT MODIFY */
         StdDraw.line(this.x, this.y, that.x, that.y);
     }
 
@@ -65,7 +62,8 @@ public class Point implements Comparable<Point> {
         if (this.x == that.x) {
             return Double.POSITIVE_INFINITY;
         }
-        return ((double) that.y - this.y) / (that.x - this.x);
+        // ternary operator so Java does not return `negative zero`
+        return (this.y == that.y) ? 0 : ((double) that.y - this.y) / (that.x - this.x);
     }
 
     /**
@@ -101,6 +99,7 @@ public class Point implements Comparable<Point> {
     }
 
     private class SlopeComparator implements Comparator<Point> {
+        @Override
         public int compare(Point a, Point b) {
             return Double.compare(slopeTo(a), slopeTo(b));
         }
@@ -115,7 +114,6 @@ public class Point implements Comparable<Point> {
      * @return a string representation of this point
      */
     public String toString() {
-        /* DO NOT MODIFY */
         return "(" + x + ", " + y + ")";
     }
 
@@ -123,6 +121,6 @@ public class Point implements Comparable<Point> {
      * Unit tests the Point data type.
      */
     public static void main(String[] args) {
-        /* YOUR CODE HERE */
+        return;
     }
 }

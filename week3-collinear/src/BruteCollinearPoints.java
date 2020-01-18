@@ -21,7 +21,7 @@ import edu.princeton.cs.algs4.StdDraw;
 
 public class BruteCollinearPoints {
 
-    private LineSegment[] segments;
+    private final LineSegment[] segments;
 
     /**
      * Finds all line segments containing 4 points.
@@ -47,17 +47,22 @@ public class BruteCollinearPoints {
 
         // ensure no duplicates
         for (int i = 0; i < p.length - 1; i++) {
-            if (points[i].compareTo(points[i + 1]) == 0) {
+            if (p[i].compareTo(p[i + 1]) == 0) {
                 throw new IllegalArgumentException("Array contains repeated points");
             }
         }
 
-        // for storing all the line segments with 4 points
+        // for storing all the line segments with at least 4 points
         ArrayList<LineSegment> segmentList = new ArrayList<LineSegment>();
+
+        // for finding last collinear point
+        int indexLast = -1;
+        boolean foundLast = false;
 
         // iterate over all combinations of 4 points in natural order
         for (int i = 0; i < p.length - 3; i++) {
             for (int j = i + 1; j < p.length - 2; j++) {
+                foundLast = false;
                 for (int k = j + 1; k < p.length - 1; k++) {
                     // if first 3 points not collinear, then 4 cannot be.
                     double slope1 = p[i].slopeTo(p[j]);
@@ -65,21 +70,25 @@ public class BruteCollinearPoints {
                     if (slope1 != slope2) {
                         continue;
                     }
-                    for (int l = k + 1; l < p.length; l++) {
-                        double slope3 = p[i].slopeTo(p[l]);
-                        if (slope2 != slope3) {
-                            continue;
+                    for (int m = k + 1; m < p.length; m++) {
+                        double slope3 = p[i].slopeTo(p[m]);
+                        if (slope2 == slope3) {
+                            indexLast = m;
+                            foundLast = true;
                         }
-                        // find extreme points determining line segment
-                        LineSegment segment = new LineSegment(p[i], p[l]);
-                        segmentList.add(segment);
                     }
                 }
+                // find extreme points determining line segment
+                if (foundLast) {
+                    LineSegment segment = new LineSegment(p[i], p[indexLast]);
+                    segmentList.add(segment);
+                }
+
             }
         }
 
-        segments = new LineSegment[segmentList.size()];
-        segments = segmentList.toArray(segments);
+        // convert to array
+        segments = segmentList.toArray(new LineSegment[segmentList.size()]);
     }
 
     /**
@@ -97,7 +106,7 @@ public class BruteCollinearPoints {
      * @return list of line segments
      */
     public LineSegment[] segments() {
-        return segments;
+        return Arrays.copyOf(segments, segments.length);
     }
 
     /**

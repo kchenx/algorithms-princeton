@@ -21,7 +21,7 @@ import edu.princeton.cs.algs4.StdDraw;
 
 public class FastCollinearPoints {
 
-    private LineSegment[] segments;
+    private final LineSegment[] segments;
 
     /**
      * Finds all line segments containing 4 points.
@@ -41,11 +41,12 @@ public class FastCollinearPoints {
             }
         }
 
-        Point[] p = Arrays.copyOf(points, points.length);
+        Point[] sortedPoints = Arrays.copyOf(points, points.length);
+        Arrays.sort(sortedPoints);
 
         // ensure no duplicates
-        for (int i = 0; i < p.length - 1; i++) {
-            if (points[i].compareTo(points[i + 1]) == 0) {
+        for (int i = 0; i < sortedPoints.length - 1; i++) {
+            if (sortedPoints[i].compareTo(sortedPoints[i + 1]) == 0) {
                 throw new IllegalArgumentException("Array contains repeated points");
             }
         }
@@ -54,26 +55,30 @@ public class FastCollinearPoints {
         ArrayList<LineSegment> segmentList = new ArrayList<LineSegment>();
 
         // find lines with at least 4 points by iterating over all points
-        for (Point point : p) {
-            // sort by slope made with `point`
+        for (Point point : sortedPoints) {
+            // sort by natural order and then slope made with `point`
+            Point[] p = Arrays.copyOf(sortedPoints, sortedPoints.length);
             Arrays.sort(p, point.slopeOrder());
-            int count = 0;
-            for (int i = 0; i < p.length; i++) {
-                if (i < p.length - 1 && p[i] == p[i + 1]) {
-                    count++;
-                } else if (count >= 3) {
-                    Arrays.sort(p, i - count, i);
-                    LineSegment segment = new LineSegment(p[i - count], p[i - 1]);
-                    segmentList.add(segment);
-                    count = 0;
+
+            int lo = 1; // the point itself will be in the first sorted position
+            int hi = 2;
+            while (hi < p.length) {
+                if (point.slopeTo(p[lo]) == point.slopeTo(p[hi])) {
+                    hi++;
+                } else if (hi - lo >= 3 && point.compareTo(p[lo]) < 0) {
+                    segmentList.add(new LineSegment(point, p[hi - 1]));
+                    lo = hi;
                 } else {
-                    count = 0;
+                    lo = hi;
                 }
+            }
+            if (hi - lo >= 3 && point.compareTo(p[lo]) < 0) {
+                segmentList.add(new LineSegment(point, p[hi - 1]));
             }
         }
 
-        segments = new LineSegment[segmentList.size()];
-        segments = segmentList.toArray(segments);
+        // convert to array
+        segments = segmentList.toArray(new LineSegment[segmentList.size()]);
     }
 
     /**
@@ -91,7 +96,7 @@ public class FastCollinearPoints {
      * @return list of line segments
      */
     public LineSegment[] segments() {
-        return segments;
+        return Arrays.copyOf(segments, segments.length);
     }
 
     /**
