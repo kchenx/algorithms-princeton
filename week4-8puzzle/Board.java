@@ -22,8 +22,12 @@ public class Board {
      * where tiles[row][col] = tile at (row, col)
      */
     public Board(int[][] tiles) {
-        if (tiles == null) throw new IllegalArgumentException("null board");
+        if (tiles == null) {
+            throw new IllegalArgumentException("Board null");
+        }
+
         n = tiles.length;
+        board = new int[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 board[i][j] = tiles[i][j];
@@ -79,9 +83,13 @@ public class Board {
         int count = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                int val = board[i][j];
+                if (board[i][j] == 0) {
+                    continue;
+                }
+                // convert to zero-indexing, find goal position
+                int val = board[i][j] - 1;
                 int goalRow = val / n;
-                int goalCol = val % n - 1;
+                int goalCol = val % n;
                 int distance = Math.abs(goalRow - i) + Math.abs(goalCol - j);
                 count += distance;
             }
@@ -118,6 +126,48 @@ public class Board {
      */
     public Iterable<Board> neighbors() {
         Queue<Board> q = new Queue<Board>();
+
+        // coordinates of blank square
+        int x = 0;
+        int y = 0;
+
+        int[][] neighbor = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (board[i][j] == 0) {
+                    x = i;
+                    y = j;
+                }
+                neighbor[i][j] = board[i][j];
+            }
+        }
+
+        // add neighbors if they exist
+        if (x > 1) {
+            swap(neighbor, x, y, x - 1, y);
+            Board neighborBoard = new Board(neighbor);
+            q.enqueue(neighborBoard);
+            swap(neighbor, x, y, x, y - 1);
+        }
+        if (y > 1) {
+            swap(neighbor, x, y, x, y - 1);
+            Board neighborBoard = new Board(neighbor);
+            q.enqueue(neighborBoard);
+            swap(neighbor, x, y, x, y - 1);
+        }
+        if (x < n - 1) {
+            swap(neighbor, x, y, x + 1, y);
+            Board neighborBoard = new Board(neighbor);
+            q.enqueue(neighborBoard);
+            swap(neighbor, x, y, x + 1, y);
+        }
+        if (y < n - 1) {
+            swap(neighbor, x, y, x, y + 1);
+            Board neighborBoard = new Board(neighbor);
+            q.enqueue(neighborBoard);
+            swap(neighbor, x, y, x, y + 1);
+        }
+
         return q;
     }
 
@@ -140,13 +190,13 @@ public class Board {
 
         if (firstTileBlank) {
             // swap second and third
-            swap(0, 1, 1, 0);
+            swap(twin, 0, 1, 1, 0);
         } else if (secondTileBlank) {
             // swap first and third
-            swap(0, 0, 1, 0);
+            swap(twin, 0, 0, 1, 0);
         } else {
             // swap first and second
-            swap(0, 0, 0, 1);
+            swap(twin, 0, 0, 0, 1);
         }
 
         Board twinBoard = new Board(twin);
@@ -154,29 +204,53 @@ public class Board {
     }
 
     /**
-     * Swaps elements at position (x1, y1) and (x2, y2) on the board, 
+     * Swaps integers at position (x1, y1) and (x2, y2) in the matrix `matrix`, 
      * where every parameter is zero-indexed
      * 
+     * @param matrix matrix where integers will be swapped
      * @param x1 x-coordinate of first block
      * @param y1 y-coordinate of first block
      * @param x2 x-coordinate of second block
      * @param y2 y-coordinate of second block
      */
-    private void swap(int x1, int y1, int x2, int y2) {
-        if (x1 < 0 || x1 >= n || x2 < 0 || x2 >= n) {
-            throw new IllegalArgumentException("out of bounds indices");
+    private static void swap(int[][] matrix, int x1, int y1, int x2, int y2) {
+        if (matrix == null) {
+            throw new IllegalArgumentException("Matrix null");
         }
-        int temp = board[x1][y1];
-        board[x1][y1] = board[x2][y2];
-        board[x2][y2] = temp;
+        if (x1 < 0 || x1 >= matrix.length || x2 < 0 || x2 >= matrix.length ||
+                y1 < 0 || y1 >= matrix[0].length || y1 < 0 || y2 >= matrix[0].length) {
+            throw new IllegalArgumentException("Indices out of bound");
+        }
+        int temp = matrix[x1][y1];
+        matrix[x1][y1] = matrix[x2][y2];
+        matrix[x2][y2] = temp;
     }
 
     /**
-     * Unit testing (not graded)
+     * Unit testing
      * @param args
      */
     public static void main(String[] args) {
-        return;
+        int n = 3;
+        int[][] tiles = {{8, 1, 3}, {4, 0, 2}, {7, 6, 5}};
+        Board board = new Board(tiles);
+
+        int[][] tiles2 = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                tiles2[i][j] = i * n + j;
+            }
+        }
+        Board board2 = new Board(tiles2);
+
+        System.out.println(board);
+        System.out.println(board.dimension());
+        System.out.println(board.hamming());
+        System.out.println(board.manhattan());
+        System.out.println(board.isGoal());
+        System.out.println(board.equals(board2));
+        System.out.println(board.neighbors());
+        System.out.println(board.twin());
     }
 
 }

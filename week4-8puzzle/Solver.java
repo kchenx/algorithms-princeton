@@ -23,6 +23,8 @@ public class Solver {
         if (initial == null) {
             throw new IllegalArgumentException("initial board null");
         }
+        
+        MinPQ<Board> pq = new MinPQ<Board>();
         return;
     }
 
@@ -80,4 +82,5 @@ public class Solver {
             }
         }
     }
+
 }
