@@ -99,6 +99,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     /**
      * Returns an independent iterator over the items in the queue in random order
      */
+    @Override
     public Iterator<Item> iterator() {
         return new RandomizedQueueIterator();
     }
@@ -112,14 +113,17 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             order = StdRandom.permutation(nitems);
         }
 
+        @Override
         public boolean hasNext() {
             return current < order.length;
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public Item next() {
             if (!hasNext()) {
                 throw new NoSuchElementException();

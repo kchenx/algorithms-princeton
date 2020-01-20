@@ -43,6 +43,7 @@ public class LineSegment {
      *
      * @return a string representation of this line segment
      */
+    @Override
     public String toString() {
         return p + " -> " + q;
     }
@@ -55,6 +56,7 @@ public class LineSegment {
      *
      * @throws UnsupportedOperationException if called
      */
+    @Override
     public int hashCode() {
         throw new UnsupportedOperationException();
     }

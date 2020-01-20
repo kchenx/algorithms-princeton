@@ -139,10 +139,11 @@ public class Deque<Item> implements Iterable<Item> {
         nitems--;
         return n.item;
     }
-    
+
     /**
-     * Returns an interator over the elements in the deque from front to back.
+     * Returns an iterator over the elements in the deque from front to back.
      */
+    @Override
     public Iterator<Item> iterator() {
         return new DequeIterator();
     }
@@ -150,14 +151,17 @@ public class Deque<Item> implements Iterable<Item> {
     private class DequeIterator implements Iterator<Item> {
         private Node current = first;
 
+        @Override
         public boolean hasNext() {
             return current != null;
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public Item next() {
             if (!hasNext()) {
                 throw new NoSuchElementException();
