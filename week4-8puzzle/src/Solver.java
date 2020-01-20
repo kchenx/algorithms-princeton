@@ -1,7 +1,7 @@
 /******************************************************************************
  *  Compilation:  javac-algs4 Solver.java
  *  Execution:    java-algs4 Solver filename1.txt filename2.txt ...
- *  Dependencies: Board.java
+ *  Dependencies: Board.java MinPQ.java
  *
  *  This program implements the A* search algorithm to solve n-by-n slider 
  *  puzzles.
@@ -9,8 +9,9 @@
  ******************************************************************************/
 
 import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.MinPQ;
 
 public class Solver {
 
@@ -19,11 +20,14 @@ public class Solver {
      * @param initial board to be solved
      */
     public Solver(Board initial) {
+        if (initial == null) {
+            throw new IllegalArgumentException("initial board null");
+        }
         return;
     }
 
     /**
-     * Calculates if the initial board solvable? (see below)
+     * Calculates if the initial board solvable
      * @return true iff the initial board is solvable
      */
     public boolean isSolvable() {
@@ -48,8 +52,8 @@ public class Solver {
     }
 
     /**
-     * Test client (see below) 
-     * @param args
+     * Test client
+     * @param args file containing initial board
      */
     public static void main(String[] args) {
         // create initial board from file

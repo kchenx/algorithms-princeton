@@ -9,6 +9,7 @@
  ******************************************************************************/
 
 import java.lang.Math;
+import java.util.Arrays;
 import edu.princeton.cs.algs4.Queue;
 
 public class Board {
@@ -97,7 +98,7 @@ public class Board {
     }
 
     /**
-     * Calculates if this board is equal to `y`?
+     * Calculates if this board is equal to `y`
      * @return true iff the board is equal to `y`
      */
     @Override
@@ -108,15 +109,7 @@ public class Board {
 
         Board that = (Board) y;
 
-        if (this.n != that.n) return false;
-        for (int i = 0; i < this.n; i++) {
-            for (int j = 0; j < this.n; j++) {
-                if (this.board[i][j] != that.board[i][j]) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return Arrays.deepEquals(this.board, that.board);
     }
 
     /**
@@ -139,13 +132,43 @@ public class Board {
                 twin[i][j] = board[i][j];
             }
         }
-        // swap a pair of tiles
-        int temp = twin[0][0];
-        twin[0][0] = twin[0][1];
-        twin[0][1] = temp;
+
+        // swap a pair of tiles (checking that blank square is not swapped)
+        boolean firstTileBlank = (twin[0][0] == 0);
+        boolean secondTileBlank = (twin[0][1] == 0);
+        // the "third tile" is twin[1][0]
+
+        if (firstTileBlank) {
+            // swap second and third
+            swap(0, 1, 1, 0);
+        } else if (secondTileBlank) {
+            // swap first and third
+            swap(0, 0, 1, 0);
+        } else {
+            // swap first and second
+            swap(0, 0, 0, 1);
+        }
 
         Board twinBoard = new Board(twin);
         return twinBoard;
+    }
+
+    /**
+     * Swaps elements at position (x1, y1) and (x2, y2) on the board, 
+     * where every parameter is zero-indexed
+     * 
+     * @param x1 x-coordinate of first block
+     * @param y1 y-coordinate of first block
+     * @param x2 x-coordinate of second block
+     * @param y2 y-coordinate of second block
+     */
+    private void swap(int x1, int y1, int x2, int y2) {
+        if (x1 < 0 || x1 >= n || x2 < 0 || x2 >= n) {
+            throw new IllegalArgumentException("out of bounds indices");
+        }
+        int temp = board[x1][y1];
+        board[x1][y1] = board[x2][y2];
+        board[x2][y2] = temp;
     }
 
     /**
