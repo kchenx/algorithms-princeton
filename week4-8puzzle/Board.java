@@ -14,8 +14,8 @@ import java.util.Arrays;
 
 public class Board {
 
-    private char[][] tiles;
-    private int n;
+    final private char[][] tiles;
+    final private int n;
 
     /**
      * Creates a board from an n-by-n array of tiles,

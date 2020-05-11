@@ -18,7 +18,7 @@ public class Solver {
 
     private boolean solvable;
     private int nmoves;
-    private Stack<Board> sequence;
+    final private Stack<Board> sequence;
 
     private class Node implements Comparable<Node> {
         Board board;
@@ -80,7 +80,6 @@ public class Solver {
             Node twinnode = twinpq.delMin();
             if (twinnode.board.isGoal()) {
                 solvable = false;
-                nmoves = -1;
                 return;
             }
             Iterable<Board> twinneighbors = twinnode.board.neighbors();
@@ -108,7 +107,7 @@ public class Solver {
      * @return min number of moves to solve initial board
      */
     public int moves() {
-        return nmoves;
+        return isSolvable() ? nmoves : -1;
     }
 
     /**
@@ -117,7 +116,7 @@ public class Solver {
      * @return sequence of boards in shortest solution
      */
     public Iterable<Board> solution() {
-        return sequence;
+        return isSolvable() ? sequence : null;
     }
 
     /**
