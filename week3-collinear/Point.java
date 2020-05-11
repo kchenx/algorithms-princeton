@@ -20,8 +20,8 @@ public class Point implements Comparable<Point> {
     /**
      * Initializes a new point.
      *
-     * @param x the <em>x</em>-coordinate of the point
-     * @param y the <em>y</em>-coordinate of the point
+     * @param x the x-coordinate of the point
+     * @param y the y-coordinate of the point
      */
     public Point(int x, int y) {
         this.x = x;

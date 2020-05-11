@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Deque<Item> implements Iterable<Item> {
-
     // first and last items in deque
     private Node first;
     private Node last;
@@ -22,9 +21,9 @@ public class Deque<Item> implements Iterable<Item> {
     private int nitems = 0;   // number of items in deque
 
     private class Node {
-        Item item;
-        Node prev;
-        Node next;
+        private Item item;
+        private Node prev;
+        private Node next;
 
         private Node(Item item) {
             this.item = item;
@@ -179,9 +178,9 @@ public class Deque<Item> implements Iterable<Item> {
         }
     }
 
-    private static void printTest(int n, boolean result) {
-        String s = result ? "pass" : "FAILED";
-        StdOut.printf("test%03d: %s\n", n, s);
+    private static void printTest(boolean result) {
+        String s = result ? "passed" : "FAILED";
+        StdOut.printf("test %s\n", s);
     }
 
     // unit testing (required)
@@ -189,84 +188,45 @@ public class Deque<Item> implements Iterable<Item> {
 
         // test `isEmpty`
         StdOut.printf("\n----- TESTING ISEMPTY -----\n");
-        int n = 1;
 
         Deque<Integer> q1 = new Deque<>();
 
-        printTest(n++, q1.isEmpty());
-
-        boolean thrown = false;
-        try {
-            q1.removeFirst();
-        }
-        catch (NoSuchElementException e) {
-            thrown = true;
-        }
-        printTest(n++, q1.isEmpty() && thrown);
-
-        thrown = false;
-        try {
-            q1.removeLast();
-        }
-        catch (NoSuchElementException e) {
-            thrown = true;
-        }
-        printTest(n++, q1.isEmpty() && thrown);
+        printTest(q1.isEmpty());
 
         q1.addFirst(1);
-        printTest(n++, !q1.isEmpty());
+        printTest(!q1.isEmpty());
 
         q1.addLast(2);
-        printTest(n++, !q1.isEmpty());
+        printTest(!q1.isEmpty());
 
         q1.removeLast();
-        printTest(n++, !q1.isEmpty());
+        printTest(!q1.isEmpty());
 
         q1.removeFirst();
-        printTest(n, q1.isEmpty());
+        printTest(q1.isEmpty());
 
 
         // test `size`
         StdOut.printf("\n----- TESTING SIZE -----\n");
-        n = 1;
 
         Deque<Integer> q2 = new Deque<>();
-        printTest(n++, q2.size() == 0);
-
-        thrown = false;
-        try {
-            q2.removeLast();
-        }
-        catch (NoSuchElementException e) {
-            thrown = true;
-        }
-        printTest(n++, q2.size() == 0 && thrown);
-
-        thrown = false;
-        try {
-            q2.removeLast();
-        }
-        catch (NoSuchElementException e) {
-            thrown = true;
-        }
-        printTest(n++, q2.size() == 0 && thrown);
+        printTest(q2.size() == 0);
 
         q2.addFirst(1);
-        printTest(n++, q2.size() == 1);
+        printTest(q2.size() == 1);
 
         q2.addLast(2);
-        printTest(n++, q2.size() == 2);
+        printTest(q2.size() == 2);
 
         q2.removeLast();
-        printTest(n++, q2.size() == 1);
+        printTest(q2.size() == 1);
 
         q2.removeFirst();
-        printTest(n, q2.size() == 0);
+        printTest(q2.size() == 0);
 
 
         // test `addFirst`
         StdOut.printf("\n----- TESTING ADDFIRST -----\n");
-        n = 1;
 
         Deque<Integer> q3 = new Deque<>();
 
@@ -279,13 +239,12 @@ public class Deque<Item> implements Iterable<Item> {
 
         int k = 0;
         for (int j : q3) {
-            printTest(n++, j == backwards[k++]);
+            printTest(j == backwards[k++]);
         }
 
 
         // test `addLast`
         StdOut.printf("\n----- TESTING ADDFIRST -----\n");
-        n = 1;
 
         Deque<Integer> q4 = new Deque<>();
 
@@ -295,46 +254,44 @@ public class Deque<Item> implements Iterable<Item> {
             forwards[i] = i;
         }
 
-        k = 0;
+        int m = 0;
         for (int j : q4) {
-            printTest(n++, j == forwards[k++]);
+            printTest(j == forwards[m++]);
         }
 
 
         // test `removeFirst`
         StdOut.printf("\n----- TESTING REMOVEFIRST -----\n");
-        n = 1;
 
         for (int i = 0; i < nelts; i++) {
-            printTest(n++, q3.removeFirst() == backwards[i]);
+            printTest(q3.removeFirst() == backwards[i]);
         }
 
-        thrown = false;
+        boolean thrown1 = false;
         try {
             q3.removeFirst();
         }
         catch (NoSuchElementException e) {
-            thrown = true;
+            thrown1 = true;
         }
-        printTest(n, thrown);
+        printTest(thrown1);
 
 
         // test `removeLast`
         StdOut.printf("\n----- TESTING REMOVELAST -----\n");
-        n = 1;
 
         for (int i = 0; i < nelts; i++) {
-            printTest(n++, q4.removeLast() == backwards[i]);
+            printTest(q4.removeLast() == backwards[i]);
         }
 
-        thrown = false;
+        boolean thrown2 = false;
         try {
             q4.removeLast();
         }
         catch (NoSuchElementException e) {
-            thrown = true;
+            thrown2 = true;
         }
-        printTest(n, thrown);
+        printTest(thrown2);
 
     }
 

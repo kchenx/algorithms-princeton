@@ -66,10 +66,12 @@ public class FastCollinearPoints {
             while (hi < p.length) {
                 if (point.slopeTo(p[lo]) == point.slopeTo(p[hi])) {
                     hi++;
-                } else if (hi - lo >= 3 && point.compareTo(p[lo]) < 0) {
+                }
+                else if (hi - lo >= 3 && point.compareTo(p[lo]) < 0) {
                     segmentList.add(new LineSegment(point, p[hi - 1]));
                     lo = hi;
-                } else {
+                }
+                else {
                     lo = hi;
                 }
             }

@@ -24,10 +24,10 @@ public class Solver {
      * Search node type for A* algorithm
      */
     private class Node implements Comparable<Node> {
-        Board board;
-        Node prev;
-        int moves;
-        int priority;
+        private Board board;
+        private Node prev;
+        private int moves;
+        private int priority;
 
         private Node(Board board, Node prev, int moves) {
             this.board = board;

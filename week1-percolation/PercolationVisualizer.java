@@ -27,8 +27,8 @@ public class PercolationVisualizer {
     private static final int DELAY = 100;
 
     /**
-     * Draws <tt>n</tt>-by-<tt>n</tt> percolation system.
-     * 
+     * Draws n-by-n percolation system.
+     *
      * @param perc percolation system to draw
      * @param n    dimension of percolation system
      */

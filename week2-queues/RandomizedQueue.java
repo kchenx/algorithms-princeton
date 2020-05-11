@@ -133,7 +133,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     /**
-     * Resizes the randomized queue to the size <tt>capacity</tt>
+     * Resizes the randomized queue to the size `capacity`
      *
      * @param capacity the new size of the queue
      */
@@ -143,9 +143,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         rq = copy;
     }
 
-    private static void printTest(int n, boolean result) {
-        String s = result ? "pass" : "FAILED";
-        StdOut.printf("test%03d: %s\n", n, s);
+    private static void printTest(boolean result) {
+        String s = result ? "passed" : "FAILED";
+        StdOut.printf("test %s\n", s);
     }
 
     // unit testing (required)
@@ -153,61 +153,41 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         // test `isEmpty`
         StdOut.printf("\n----- TESTING ISEMPTY -----\n");
-        int n = 1;
 
         RandomizedQueue<Integer> q1 = new RandomizedQueue<>();
 
-        printTest(n++, q1.isEmpty());
-
-        boolean thrown = false;
-        try {
-            q1.dequeue();
-        }
-        catch (NoSuchElementException e) {
-            thrown = true;
-        }
-        printTest(n++, q1.isEmpty() && thrown);
+        printTest(q1.isEmpty());
 
         q1.enqueue(1);
-        printTest(n++, !q1.isEmpty());
+        printTest(!q1.isEmpty());
 
         q1.enqueue(2);
-        printTest(n++, !q1.isEmpty());
+        printTest(!q1.isEmpty());
 
         q1.dequeue();
-        printTest(n++, !q1.isEmpty());
+        printTest(!q1.isEmpty());
 
         q1.dequeue();
-        printTest(n, q1.isEmpty());
+        printTest(q1.isEmpty());
 
 
         // test `size`
         StdOut.printf("\n----- TESTING SIZE -----\n");
-        n = 1;
 
         RandomizedQueue<Integer> q2 = new RandomizedQueue<>();
-        printTest(n++, q2.size() == 0);
-
-        thrown = false;
-        try {
-            q2.dequeue();
-        }
-        catch (NoSuchElementException e) {
-            thrown = true;
-        }
-        printTest(n++, q2.size() == 0 && thrown);
+        printTest(q2.size() == 0);
 
         q2.enqueue(1);
-        printTest(n++, q2.size() == 1);
+        printTest(q2.size() == 1);
 
         q2.enqueue(2);
-        printTest(n++, q2.size() == 2);
+        printTest(q2.size() == 2);
 
         q2.dequeue();
-        printTest(n++, q2.size() == 1);
+        printTest(q2.size() == 1);
 
         q2.dequeue();
-        printTest(n, q2.size() == 0);
+        printTest(q2.size() == 0);
 
 
         // test `enqueue`
@@ -228,37 +208,35 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         // test `dequeue`
         StdOut.printf("\n----- TESTING DEQUEUE -----\n");
-        n = 1;
 
         for (int i = 0; i < nelts; i++) {
             StdOut.print(q3.dequeue() + " ");
         }
         StdOut.println();
 
-        thrown = false;
+        boolean thrown1 = false;
         try {
             q3.dequeue();
         }
         catch (NoSuchElementException e) {
-            thrown = true;
+            thrown1 = true;
         }
-        printTest(n, thrown);
+        printTest(thrown1);
 
 
         // test `sample`
         StdOut.printf("\n----- TESTING SAMPLE -----\n");
-        n = 1;
 
         RandomizedQueue<Integer> q5 = new RandomizedQueue<>();
 
-        thrown = false;
+        boolean thrown2 = false;
         try {
             q5.sample();
         }
         catch (NoSuchElementException e) {
-            thrown = true;
+            thrown2 = true;
         }
-        printTest(n, thrown);
+        printTest(thrown2);
 
         for (int i = 0; i < nelts; i++) {
             q5.enqueue(i);
@@ -271,9 +249,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         // test independence of iterators
         StdOut.printf("\n----- TESTING ITERATOR -----\n");
-        n = 5;
         RandomizedQueue<Integer> queue = new RandomizedQueue<Integer>();
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < 5; i++) {
             queue.enqueue(i);
         }
         for (int a : queue) {

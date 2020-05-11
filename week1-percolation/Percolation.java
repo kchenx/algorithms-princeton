@@ -54,8 +54,7 @@ public class Percolation {
     private final int n;
 
     /**
-     * Creates <tt>n</tt>-by-<tt>n</tt> percolation system, with all sites
-     * initially blocked.
+     * Creates n-by-n percolation system, with all sites initially blocked.
      *
      * @param n dimension of n-by-n grid
      */
@@ -75,8 +74,7 @@ public class Percolation {
     }
 
     /**
-     * Opens the site with indices (<tt>row</tt>, <tt>col</tt>)
-     * if it is not already open.
+     * Opens the site with indices (row, col) if it is not already open.
      *
      * @param row row index
      * @param col col index
@@ -113,11 +111,11 @@ public class Percolation {
     }
 
     /**
-     * Checks if the site with indices (<tt>row</tt>, <tt>col</tt>) is open.
+     * Checks if the site with indices (row, col) is open.
      *
      * @param row row index
      * @param col col index
-     * @return true iff the site (<tt>row</tt>, <tt>col</tt>) is open
+     * @return true iff the site (row, col) is open
      */
     public boolean isOpen(final int row, final int col) {
         if (!inRange(row, col)) {
@@ -128,14 +126,12 @@ public class Percolation {
     }
 
     /**
-     * Checks if the site (<tt>row</tt>, <tt>col</tt>) is full.
-     * A "full" site is an open site that can be connected to an open site
-     * in the top row via a chain of neighboring (left, right, up, down)
-     * open sites.
+     * Checks if the site (row, col) is full. A "full" site is an open site that can be connected to
+     * an open site in the top row via a chain of neighboring (left, right, up, down) open sites.
      *
      * @param row row index
      * @param col col index
-     * @return true iff the site (<tt>row</tt>, <tt>col</tt>) is full
+     * @return true iff the site (row, col) is full
      */
     public boolean isFull(final int row, final int col) {
         if (!inRange(row, col)) {
@@ -156,8 +152,8 @@ public class Percolation {
     }
 
     /**
-     * Calculates if the system percolates.
-     * A system "percolates" iff there is a full site in the bottom row.
+     * Calculates if the system percolates. A system "percolates" iff there is a full site in the
+     * bottom row.
      *
      * @return true iff the system percolates
      */
@@ -169,8 +165,8 @@ public class Percolation {
     }
 
     /**
-     * Converts (<tt>row</tt>, <tt>col</tt>) indices (which are 1-based)
-     * to a single 0-based index for Union-Find structure.
+     * Converts (row, col) indices (which are 1-indexed) to a single 0-based index for Union-Find
+     * structure.
      *
      * @param row row index
      * @param col col index
@@ -181,8 +177,7 @@ public class Percolation {
     }
 
     /**
-     * Calculates if indices are "valid": within the range of the percolation
-     * system.
+     * Calculates if indices are "valid": within the range of the percolation system.
      *
      * @param row row index
      * @param col col index
@@ -193,9 +188,8 @@ public class Percolation {
     }
 
     /**
-     * Merges the set containing the element <tt>p</tt> with the set
-     * containing the element <tt>q</tt> in both the <tt>uf</tt> and
-     * <tt>ufNoBackwash</tt> union-find structures.
+     * Merges the set containing the element `p` with the set containing the element `q` in both the
+     * `uf` and `ufNoBackwash` union-find structures.
      *
      * @param p one element
      * @param q the other element

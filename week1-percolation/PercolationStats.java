@@ -30,10 +30,9 @@ public class PercolationStats {
     private double stddev = -1;
 
     /**
-     * Performs <tt>trials</tt> independent trials on an <tt>n</tt>-by-<tt>n</tt>
-     * percolation system. Adds the percolation threshold of each trial to 
-     * <tt>results</tt>.
-     * 
+     * Performs `trials` independent trials on an n-by-n percolation system. Adds the percolation
+     * threshold of each trial to `results`
+     *
      * @param n      dimension of grid
      * @param trials number of trials to perform
      */
@@ -52,13 +51,13 @@ public class PercolationStats {
                 int col = StdRandom.uniform(1, n + 1);
                 perc.open(row, col);
             }
-            results[i] = ((double) perc.numberOfOpenSites()) / (n*n);
+            results[i] = ((double) perc.numberOfOpenSites()) / (n * n);
         }
     }
 
     /**
      * Calculates sample mean of percolation threshold
-     * 
+     *
      * @return sample mean of percolation threshold
      */
     public double mean() {
@@ -70,7 +69,7 @@ public class PercolationStats {
 
     /**
      * Calculates sample standard deviation of percolation threshold
-     * 
+     *
      * @return sample standard deviation of percolation threshold
      */
     public double stddev() {
@@ -85,7 +84,7 @@ public class PercolationStats {
 
     /**
      * Calculates low endpoint of 95% confidence interval of percolation threshold
-     * 
+     *
      * @return low endpoint of 95% confidence interval
      */
     public double confidenceLo() {
@@ -94,7 +93,7 @@ public class PercolationStats {
 
     /**
      * Calculates high endpoint of 95% confidence interval of percolation threshold
-     * 
+     *
      * @return high endpoint of 95% confidence interval
      */
     public double confidenceHi() {
@@ -114,7 +113,8 @@ public class PercolationStats {
 
         System.out.println("mean                    = " + p.mean());
         System.out.println("stddev                  = " + p.stddev());
-        System.out.printf("95%% confidence interval = [%f, %f]\n", p.confidenceLo(), p.confidenceHi());
+        System.out.printf("95%% confidence interval = [%f, %f]\n", p.confidenceLo(),
+                          p.confidenceHi());
     }
 
 }
