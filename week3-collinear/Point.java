@@ -1,7 +1,7 @@
 /******************************************************************************
  *  Compilation:  javac Point.java
  *  Execution:    java Point
- *  Dependencies: none
+ *  Dependencies: StdDraw.java
  *
  *  An immutable data type for points in the plane.
  *  For use on Coursera, Algorithms Part I programming assignment.

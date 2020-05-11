@@ -1,7 +1,7 @@
 /******************************************************************************
  *  Compilation:  javac PercolationStats.java
  *  Execution:    java PercolationStats n T
- *  Dependencies: Percolation.java StdRandom.java
+ *  Dependencies: Percolation.java StdRandom.java StdStats.java
  *
  *  This program takes two integers `n` and `T` as arguments.
  *  Then, it performs `T` Monte Carlo simulations as such:

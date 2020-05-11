@@ -11,3 +11,6 @@ artifacts/
 
 # Mac
 .DS_Store
+
+# Other
+*.zip

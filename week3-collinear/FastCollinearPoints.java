@@ -1,7 +1,7 @@
 /******************************************************************************
  *  Compilation:  javac FastCollinearPoints.java
  *  Execution:    java FastCollinearPoints
- *  Dependencies: Point.java LineSegment.java
+ *  Dependencies: Point.java LineSegment.java In.java StdOut.java StdDraw.java
  *
  *  A sorting algorithm to detect 4-tuples of collinear points.
  *
