@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 public class Board {
 
-    private int[][] board;
+    private char[][] tiles;
     private int n;
 
     /**
@@ -27,10 +27,10 @@ public class Board {
         }
 
         n = tiles.length;
-        board = new int[n][n];
+        this.tiles = new char[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                board[i][j] = tiles[i][j];
+                this.tiles[i][j] = (char) tiles[i][j];
             }
         }
     }
@@ -42,14 +42,15 @@ public class Board {
      */
     @Override
     public String toString() {
-        StringBuilder repr = new StringBuilder(n + "\n");
+        StringBuilder s = new StringBuilder();
+        s.append(n + "\n");
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                repr.append(" ").append(board[i][j]);
+                s.append(String.format("%2d ", (int) tiles[i][j]));
             }
-            repr.append("\n");
+            s.append("\n");
         }
-        return repr.toString();
+        return s.toString();
     }
 
     /**
@@ -58,7 +59,7 @@ public class Board {
      * @return board dimension `n`
      */
     public int dimension() {
-        return board.length;
+        return n;
     }
 
     /**
@@ -70,7 +71,7 @@ public class Board {
         int count = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (board[i][j] != i * n + j + 1 && board[i][j] != 0) {
+                if (tiles[i][j] != i * n + j + 1 && tiles[i][j] != 0) {
                     count++;
                 }
             }
@@ -87,11 +88,11 @@ public class Board {
         int count = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (board[i][j] == 0) {
+                if (tiles[i][j] == 0) {
                     continue;
                 }
                 // convert to zero-indexing, find goal position
-                int val = board[i][j] - 1;
+                int val = tiles[i][j] - 1;
                 int goalRow = val / n;
                 int goalCol = val % n;
                 int distance = Math.abs(goalRow - i) + Math.abs(goalCol - j);
@@ -123,7 +124,7 @@ public class Board {
 
         Board that = (Board) y;
 
-        return Arrays.deepEquals(this.board, that.board);
+        return Arrays.deepEquals(this.tiles, that.tiles);
     }
 
     /**
@@ -141,22 +142,22 @@ public class Board {
         int[][] neighbor = new int[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (board[i][j] == 0) {
+                if (tiles[i][j] == 0) {
                     x = i;
                     y = j;
                 }
-                neighbor[i][j] = board[i][j];
+                neighbor[i][j] = tiles[i][j];
             }
         }
 
         // add neighbors if they exist
-        if (x > 1) {
+        if (x > 0) {
             swap(neighbor, x, y, x - 1, y);
             Board neighborBoard = new Board(neighbor);
             q.enqueue(neighborBoard);
-            swap(neighbor, x, y, x, y - 1);
+            swap(neighbor, x, y, x - 1, y);
         }
-        if (y > 1) {
+        if (y > 0) {
             swap(neighbor, x, y, x, y - 1);
             Board neighborBoard = new Board(neighbor);
             q.enqueue(neighborBoard);
@@ -187,7 +188,7 @@ public class Board {
         int[][] twin = new int[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                twin[i][j] = board[i][j];
+                twin[i][j] = tiles[i][j];
             }
         }
 
