@@ -2,22 +2,23 @@
  *  Compilation:  javac FastCollinearPoints.java
  *  Execution:    java FastCollinearPoints
  *  Dependencies: Point.java LineSegment.java
- *  
+ *
  *  A sorting algorithm to detect 4-tuples of collinear points.
- *  
+ *
  *  This program takes as a command-line argument a .txt file to test the
  *  program. The file consists of an integer `n`, followed by `n` points
  *  represented by space-separated integers `x y`, each between 0 and 32,767.
  *
  ******************************************************************************/
 
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdOut;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 // only needed for the test client
-import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.StdDraw;
 
 public class FastCollinearPoints {
 
@@ -25,7 +26,7 @@ public class FastCollinearPoints {
 
     /**
      * Finds all line segments containing 4 points.
-     * 
+     *
      * @param points list of points
      */
     public FastCollinearPoints(Point[] points) {
@@ -78,12 +79,12 @@ public class FastCollinearPoints {
         }
 
         // convert to array
-        segments = segmentList.toArray(new LineSegment[segmentList.size()]);
+        segments = segmentList.toArray(new LineSegment[0]);
     }
 
     /**
      * Calculates number of line segments containing 4 points.
-     * 
+     *
      * @return number of line segments
      */
     public int numberOfSegments() {
@@ -92,7 +93,7 @@ public class FastCollinearPoints {
 
     /**
      * Returns list of line segments containing 4 points.
-     * 
+     *
      * @return list of line segments
      */
     public LineSegment[] segments() {
@@ -101,6 +102,7 @@ public class FastCollinearPoints {
 
     /**
      * Test client
+     *
      * @param args txt file providing list of points
      */
     public static void main(String[] args) {

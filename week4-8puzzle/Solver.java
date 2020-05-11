@@ -3,33 +3,34 @@
  *  Execution:    java-algs4 Solver filename1.txt filename2.txt ...
  *  Dependencies: Board.java MinPQ.java
  *
- *  This program implements the A* search algorithm to solve n-by-n slider 
+ *  This program implements the A* search algorithm to solve n-by-n slider
  *  puzzles.
  *
  ******************************************************************************/
 
 import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.MinPQ;
+import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.StdOut;
 
 public class Solver {
 
     /**
      * Finds a solution to the initial board (using the A* algorithm)
+     *
      * @param initial board to be solved
      */
     public Solver(Board initial) {
         if (initial == null) {
             throw new IllegalArgumentException("initial board null");
         }
-        
+
         MinPQ<Board> pq = new MinPQ<Board>();
-        return;
     }
 
     /**
      * Calculates if the initial board solvable
+     *
      * @return true iff the initial board is solvable
      */
     public boolean isSolvable() {
@@ -38,6 +39,7 @@ public class Solver {
 
     /**
      * Calculates min number of moves to solve initial board
+     *
      * @return min number of moves to solve initial board
      */
     public int moves() {
@@ -46,7 +48,8 @@ public class Solver {
 
     /**
      * Calculates sequence of boards in a shortest solution
-     * @return
+     *
+     * @return sequence of boards in shortest solution
      */
     public Iterable<Board> solution() {
         Queue<Board> q = new Queue<Board>();
@@ -55,6 +58,7 @@ public class Solver {
 
     /**
      * Test client
+     *
      * @param args file containing initial board
      */
     public static void main(String[] args) {
@@ -75,7 +79,8 @@ public class Solver {
         // print solution to standard output
         if (!solver.isSolvable()) {
             StdOut.println("No solution possible");
-        } else {
+        }
+        else {
             StdOut.println("Minimum number of moves = " + solver.moves());
             for (Board board : solver.solution()) {
                 StdOut.println(board);

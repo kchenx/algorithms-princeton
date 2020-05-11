@@ -3,21 +3,21 @@
  *  Execution:    java RandomizedQueue
  *  Dependencies: StdRandom.java
  *
- *  This program implements a randomized queue class as an self-expanding array 
+ *  This program implements a randomized queue class as an self-expanding array
  *  and runs unit tests in `main`.
  *
  ******************************************************************************/
 
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import edu.princeton.cs.algs4.StdRandom;
-import edu.princeton.cs.algs4.StdOut;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
-
-    private Item[] rq;        // randomized queue
-    private int nitems = 0;  // number of items in queue
+    private Item[] rq;          // randomized queue
+    private int nitems = 0;     // number of items in queue
 
     public RandomizedQueue() {
         rq = (Item[]) new Object[1];
@@ -25,7 +25,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     /**
      * Calculates if the randomized queue is empty.
-     * 
+     *
      * @return true iff the randomized queue is empty.
      */
     public boolean isEmpty() {
@@ -34,7 +34,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     /**
      * Calculates the number of items in the randomized queue
-     * 
+     *
      * @return number of items on the randomized queue
      */
     public int size() {
@@ -43,8 +43,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     /**
      * Adds an item to the randomized queue
-     * 
-     * @param  item                     item to be added
+     *
+     * @param item item to be added
      * @throws IllegalArgumentException if the item is null
      */
     public void enqueue(Item item) {
@@ -61,8 +61,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     /**
      * Remove and return an item in the queue selected uniformly at random
-     * 
-     * @return                        item in the queue selected uniformly at random
+     *
+     * @return item in the queue selected uniformly at random
      * @throws NoSuchElementException if the queue is empty
      */
     public Item dequeue() {
@@ -83,8 +83,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     /**
      * Returns an item in the queue selected uniformly at random without removing it.
-     * 
-     * @return                        item in the queue selected uniformly at random
+     *
+     * @return item in the queue selected uniformly at random
      * @throws NoSuchElementException if the queue is empty
      */
     public Item sample() {
@@ -134,14 +134,12 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     /**
      * Resizes the randomized queue to the size <tt>capacity</tt>
-     * 
+     *
      * @param capacity the new size of the queue
      */
     private void resize(int capacity) {
         Item[] copy = (Item[]) new Object[capacity];
-        for (int i = 0; i < nitems; i++) {
-            copy[i] = rq[i];
-        }
+        System.arraycopy(rq, 0, copy, 0, nitems);
         rq = copy;
     }
 
@@ -157,14 +155,15 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         StdOut.printf("\n----- TESTING ISEMPTY -----\n");
         int n = 1;
 
-        RandomizedQueue<Integer> q1 = new RandomizedQueue<Integer>();
+        RandomizedQueue<Integer> q1 = new RandomizedQueue<>();
 
-        printTest(n++, q1.isEmpty() == true);
+        printTest(n++, q1.isEmpty());
 
         boolean thrown = false;
         try {
             q1.dequeue();
-        } catch (NoSuchElementException e) {
+        }
+        catch (NoSuchElementException e) {
             thrown = true;
         }
         printTest(n++, q1.isEmpty() && thrown);
@@ -179,20 +178,21 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         printTest(n++, !q1.isEmpty());
 
         q1.dequeue();
-        printTest(n++, q1.isEmpty());
+        printTest(n, q1.isEmpty());
 
 
         // test `size`
         StdOut.printf("\n----- TESTING SIZE -----\n");
         n = 1;
 
-        RandomizedQueue<Integer> q2 = new RandomizedQueue<Integer>();
+        RandomizedQueue<Integer> q2 = new RandomizedQueue<>();
         printTest(n++, q2.size() == 0);
 
         thrown = false;
         try {
             q2.dequeue();
-        } catch (NoSuchElementException e) {
+        }
+        catch (NoSuchElementException e) {
             thrown = true;
         }
         printTest(n++, q2.size() == 0 && thrown);
@@ -207,13 +207,13 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         printTest(n++, q2.size() == 1);
 
         q2.dequeue();
-        printTest(n++, q2.size() == 0);
+        printTest(n, q2.size() == 0);
 
 
         // test `enqueue`
         StdOut.printf("\n----- TESTING ENQUEUE -----\n");
 
-        RandomizedQueue<Integer> q3 = new RandomizedQueue<Integer>();
+        RandomizedQueue<Integer> q3 = new RandomizedQueue<>();
 
         int nelts = 10;
         for (int i = 0; i < nelts; i++) {
@@ -238,25 +238,27 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         thrown = false;
         try {
             q3.dequeue();
-        } catch (NoSuchElementException e) {
+        }
+        catch (NoSuchElementException e) {
             thrown = true;
         }
-        printTest(n++, thrown);
+        printTest(n, thrown);
 
 
         // test `sample`
         StdOut.printf("\n----- TESTING SAMPLE -----\n");
         n = 1;
 
-        RandomizedQueue<Integer> q5 = new RandomizedQueue<Integer>();
+        RandomizedQueue<Integer> q5 = new RandomizedQueue<>();
 
         thrown = false;
         try {
             q5.sample();
-        } catch (NoSuchElementException e) {
+        }
+        catch (NoSuchElementException e) {
             thrown = true;
         }
-        printTest(n++, thrown);
+        printTest(n, thrown);
 
         for (int i = 0; i < nelts; i++) {
             q5.enqueue(i);

@@ -2,22 +2,23 @@
  *  Compilation:  javac BruteCollinearPoints.java
  *  Execution:    java BruteCollinearPoints filename.txt
  *  Dependencies: Point.java LineSegment.java In.java StdOut.java StdDraw.java
- *  
+ *
  *  A brute force algorithm to detect 4-tuples of collinear points.
- *  
+ *
  *  This program takes as a command-line argument a .txt file to test the
  *  program. The file consists of an integer `n`, followed by `n` points
  *  represented by space-separated integers `x y`, each between 0 and 32,767.
  *
  ******************************************************************************/
 
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdOut;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 // only needed for the test client
-import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.StdDraw;
 
 public class BruteCollinearPoints {
 
@@ -25,7 +26,7 @@ public class BruteCollinearPoints {
 
     /**
      * Finds all line segments containing 4 points.
-     * 
+     *
      * @param points list of points
      */
     public BruteCollinearPoints(Point[] points) {
@@ -53,16 +54,15 @@ public class BruteCollinearPoints {
         }
 
         // for storing all the line segments with at least 4 points
-        ArrayList<LineSegment> segmentList = new ArrayList<LineSegment>();
+        ArrayList<LineSegment> segmentList = new ArrayList<>();
 
         // for finding last collinear point
         int indexLast = -1;
-        boolean foundLast = false;
 
         // iterate over all combinations of 4 points in natural order
         for (int i = 0; i < p.length - 3; i++) {
             for (int j = i + 1; j < p.length - 2; j++) {
-                foundLast = false;
+                boolean foundLast = false;
                 for (int k = j + 1; k < p.length - 1; k++) {
                     // if first 3 points not collinear, then 4 cannot be.
                     double slope1 = p[i].slopeTo(p[j]);
@@ -88,12 +88,12 @@ public class BruteCollinearPoints {
         }
 
         // convert to array
-        segments = segmentList.toArray(new LineSegment[segmentList.size()]);
+        segments = segmentList.toArray(new LineSegment[0]);
     }
 
     /**
      * Calculates number of line segments containing 4 points.
-     * 
+     *
      * @return number of line segments
      */
     public int numberOfSegments() {
@@ -102,7 +102,7 @@ public class BruteCollinearPoints {
 
     /**
      * Returns list of line segments containing 4 points.
-     * 
+     *
      * @return list of line segments
      */
     public LineSegment[] segments() {
@@ -111,6 +111,7 @@ public class BruteCollinearPoints {
 
     /**
      * Test client
+     *
      * @param args txt file providing list of points
      */
     public static void main(String[] args) {

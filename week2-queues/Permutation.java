@@ -4,7 +4,7 @@
  *  Dependencies: RandomizedQueue.java StdIn.java StdOut.java
  *
  *  This program takes an integer `k` as an argument.
- *  
+ *
  *  Then, it reads a sequence of strings and prints exactly `k` of them,
  *  uniformly at random.
  *
@@ -27,7 +27,7 @@ public class Permutation {
             String s = StdIn.readString();
             q.enqueue(s);
         }
-        
+
         // print `k` integers chosen uniformly at random
         int k = Integer.parseInt(args[0]);
         assert k <= q.size();

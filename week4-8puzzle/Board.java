@@ -3,19 +3,19 @@
  *  Execution:    java-algs4 Board
  *  Dependencies: Stack.java
  *
- *  This program models an n-by-n board with sliding tiles for n-by-n slider 
+ *  This program models an n-by-n board with sliding tiles for n-by-n slider
  *  puzzles.
  *
  ******************************************************************************/
 
-import java.lang.Math;
-import java.util.Arrays;
 import edu.princeton.cs.algs4.Queue;
+
+import java.util.Arrays;
 
 public class Board {
 
     private int[][] board;
-    int n;
+    private int n;
 
     /**
      * Creates a board from an n-by-n array of tiles,
@@ -35,24 +35,26 @@ public class Board {
         }
     }
 
-    /** 
+    /**
      * Returns string representation of this board
-     * @return 
+     *
+     * @return string representation of this board
      */
     @Override
     public String toString() {
-        String repr = Integer.toString(n) + "\n";
+        StringBuilder repr = new StringBuilder(n + "\n");
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                repr += " " + Integer.toString(board[i][j]);
+                repr.append(" ").append(board[i][j]);
             }
-            repr += "\n";
+            repr.append("\n");
         }
-        return repr;
+        return repr.toString();
     }
 
     /**
      * Returns board dimension `n`
+     *
      * @return board dimension `n`
      */
     public int dimension() {
@@ -60,7 +62,8 @@ public class Board {
     }
 
     /**
-     * Calculates number of tiles out of place
+     * Calculates number of tiles out of place, not counting blank tile
+     *
      * @return number of tiles out of place
      */
     public int hamming() {
@@ -77,6 +80,7 @@ public class Board {
 
     /**
      * Calculates sum of Manhattan distances between tiles and goal
+     *
      * @return sum of Manhattan distances
      */
     public int manhattan() {
@@ -99,6 +103,7 @@ public class Board {
 
     /**
      * Calculates if this board is the goal board
+     *
      * @return true iff the board is the goal board
      */
     public boolean isGoal() {
@@ -107,6 +112,7 @@ public class Board {
 
     /**
      * Calculates if this board is equal to `y`
+     *
      * @return true iff the board is equal to `y`
      */
     @Override
@@ -122,6 +128,7 @@ public class Board {
 
     /**
      * Returns all neighboring boards
+     *
      * @return all neighboring boards
      */
     public Iterable<Board> neighbors() {
@@ -173,6 +180,7 @@ public class Board {
 
     /**
      * Returns a board that is obtained by exchanging any pair of tiles
+     *
      * @return board obtained by exchanging any pair of tiles
      */
     public Board twin() {
@@ -191,34 +199,35 @@ public class Board {
         if (firstTileBlank) {
             // swap second and third
             swap(twin, 0, 1, 1, 0);
-        } else if (secondTileBlank) {
+        }
+        else if (secondTileBlank) {
             // swap first and third
             swap(twin, 0, 0, 1, 0);
-        } else {
+        }
+        else {
             // swap first and second
             swap(twin, 0, 0, 0, 1);
         }
 
-        Board twinBoard = new Board(twin);
-        return twinBoard;
+        return new Board(twin);
     }
 
     /**
-     * Swaps integers at position (x1, y1) and (x2, y2) in the matrix `matrix`, 
+     * Swaps integers at position (x1, y1) and (x2, y2) in the matrix `matrix`,
      * where every parameter is zero-indexed
-     * 
+     *
      * @param matrix matrix where integers will be swapped
-     * @param x1 x-coordinate of first block
-     * @param y1 y-coordinate of first block
-     * @param x2 x-coordinate of second block
-     * @param y2 y-coordinate of second block
+     * @param x1     x-coordinate of first block
+     * @param y1     y-coordinate of first block
+     * @param x2     x-coordinate of second block
+     * @param y2     y-coordinate of second block
      */
     private static void swap(int[][] matrix, int x1, int y1, int x2, int y2) {
         if (matrix == null) {
             throw new IllegalArgumentException("Matrix null");
         }
         if (x1 < 0 || x1 >= matrix.length || x2 < 0 || x2 >= matrix.length ||
-                y1 < 0 || y1 >= matrix[0].length || y1 < 0 || y2 >= matrix[0].length) {
+                y1 < 0 || y1 >= matrix[0].length || y2 < 0 || y2 >= matrix[0].length) {
             throw new IllegalArgumentException("Indices out of bound");
         }
         int temp = matrix[x1][y1];
@@ -228,29 +237,31 @@ public class Board {
 
     /**
      * Unit testing
-     * @param args
      */
     public static void main(String[] args) {
         int n = 3;
-        int[][] tiles = {{8, 1, 3}, {4, 0, 2}, {7, 6, 5}};
-        Board board = new Board(tiles);
+        int[][] tiles1 = { { 8, 1, 3 }, { 4, 0, 2 }, { 7, 6, 5 } };
+        Board board1 = new Board(tiles1);
 
-        int[][] tiles2 = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                tiles2[i][j] = i * n + j;
-            }
-        }
+        int[][] tiles2 = { { 0, 1, 3 }, { 4, 2, 5 }, { 7, 8, 6 } };
         Board board2 = new Board(tiles2);
 
-        System.out.println(board);
-        System.out.println(board.dimension());
-        System.out.println(board.hamming());
-        System.out.println(board.manhattan());
-        System.out.println(board.isGoal());
-        System.out.println(board.equals(board2));
-        System.out.println(board.neighbors());
-        System.out.println(board.twin());
+        System.out.println(board1);
+        System.out.println(board1.dimension() == n);
+        System.out.println(board1.hamming() == 5);
+        System.out.println(board1.manhattan() == 10);
+        System.out.println(!board1.isGoal());
+        System.out.println(!board1.equals(board2));
+        System.out.println(board1.neighbors());
+        System.out.println(board1.twin());
+
+        System.out.println(board2);
+        System.out.println(board2.dimension() == n);
+        System.out.println(board2.hamming() == 4);
+        System.out.println(board2.manhattan() == 4);
+        System.out.println(!board2.isGoal());
+        System.out.println(board2.neighbors());
+        System.out.println(board2.twin());
     }
 
 }
