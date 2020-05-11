@@ -14,12 +14,12 @@ import java.util.Arrays;
 
 public class Board {
 
-    final private char[][] tiles;
-    final private int n;
+    private final char[] tiles;
+    private final int n;
 
     /**
      * Creates a board from an n-by-n array of tiles,
-     * where tiles[row][col] = tile at (row, col)
+     * where tiles[xyTo1D(row, col)] = tile at (row, col)
      */
     public Board(int[][] tiles) {
         if (tiles == null) {
@@ -27,10 +27,10 @@ public class Board {
         }
 
         n = tiles.length;
-        this.tiles = new char[n][n];
+        this.tiles = new char[n * n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                this.tiles[i][j] = (char) tiles[i][j];
+                this.tiles[xyTo1D(i, j)] = (char) tiles[i][j];
             }
         }
     }
@@ -46,7 +46,7 @@ public class Board {
         s.append(n + "\n");
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                s.append(String.format("%2d ", (int) tiles[i][j]));
+                s.append(String.format("%2d ", (int) tiles[xyTo1D(i, j)]));
             }
             s.append("\n");
         }
@@ -71,7 +71,8 @@ public class Board {
         int count = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (tiles[i][j] != i * n + j + 1 && tiles[i][j] != 0) {
+                int val = tiles[xyTo1D(i, j)];
+                if (val != i * n + j + 1 && val != 0) {
                     count++;
                 }
             }
@@ -88,11 +89,12 @@ public class Board {
         int count = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (tiles[i][j] == 0) {
+                int val = tiles[xyTo1D(i, j)];
+                if (val == 0) {
                     continue;
                 }
                 // convert to zero-indexing, find goal position
-                int val = tiles[i][j] - 1;
+                val--;
                 int goalRow = val / n;
                 int goalCol = val % n;
                 int distance = Math.abs(goalRow - i) + Math.abs(goalCol - j);
@@ -124,7 +126,7 @@ public class Board {
 
         Board that = (Board) y;
 
-        return Arrays.deepEquals(this.tiles, that.tiles);
+        return Arrays.equals(this.tiles, that.tiles);
     }
 
     /**
@@ -142,11 +144,12 @@ public class Board {
         int[][] neighbor = new int[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (tiles[i][j] == 0) {
+                int val = tiles[xyTo1D(i, j)];
+                if (val == 0) {
                     x = i;
                     y = j;
                 }
-                neighbor[i][j] = tiles[i][j];
+                neighbor[i][j] = val;
             }
         }
 
@@ -188,7 +191,7 @@ public class Board {
         int[][] twin = new int[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                twin[i][j] = tiles[i][j];
+                twin[i][j] = tiles[xyTo1D(i, j)];
             }
         }
 
@@ -211,6 +214,17 @@ public class Board {
         }
 
         return new Board(twin);
+    }
+
+    /**
+     * Converts (x,y) 0-indexed n-by-n matrix coordinate to 1D index for `tiles` array
+     *
+     * @param x 0-indexed matrix coordinate
+     * @param y 0-indexed matrix coordinate
+     * @return 1D array index
+     */
+    private int xyTo1D(int x, int y) {
+        return x * n + y;
     }
 
     /**

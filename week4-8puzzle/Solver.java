@@ -18,8 +18,11 @@ public class Solver {
 
     private boolean solvable;
     private int nmoves;
-    final private Stack<Board> sequence;
+    private final Stack<Board> sequence;
 
+    /**
+     * Search node type for A* algorithm
+     */
     private class Node implements Comparable<Node> {
         Board board;
         Node prev;
@@ -53,10 +56,13 @@ public class Solver {
         Queue<Node> removed = new Queue<Node>();    // ensure removed nodes not garbage collected
         MinPQ<Node> pq = new MinPQ<>();
         MinPQ<Node> twinpq = new MinPQ<>();
+
+        // enqueue starting board
         pq.insert(new Node(initial, null, 0));
         twinpq.insert(new Node(initial.twin(), null, 0));
 
         while (true) {
+            // dequeue min priority and check if is goal board
             Node node = pq.delMin();
             if (node.board.isGoal()) {
                 solvable = true;
@@ -67,6 +73,7 @@ public class Solver {
                 }
                 return;
             }
+            // enqueue neighbors, unless equal to previous board
             Iterable<Board> neighbors = node.board.neighbors();
             for (Board b : neighbors) {
                 if (node.prev == null || !b.equals(node.prev.board)) {
@@ -74,12 +81,13 @@ public class Solver {
                     pq.insert(n);
                 }
             }
-            nmoves++;
             removed.enqueue(node);
 
+            // only one of board and twin board will be solvable, run twin in parallel
             Node twinnode = twinpq.delMin();
             if (twinnode.board.isGoal()) {
                 solvable = false;
+                nmoves = -1;
                 return;
             }
             Iterable<Board> twinneighbors = twinnode.board.neighbors();
