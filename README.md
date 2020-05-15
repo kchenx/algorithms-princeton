@@ -5,5 +5,7 @@ Each folder contains a PDF of the problem and my solution.
 
 Applied concepts include (in order):
 1. Union-find
-2. Queues
+2. Dequeues and randomized queues
 3. Sorting
+4. Priority queues
+5. *k*-d trees

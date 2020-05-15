@@ -11,10 +11,33 @@ import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 
 public class KdTree {
+
+    // orientation of node
+    private static final boolean XCOOR = true;
+    private static final boolean YCOOR = false;
+
+    private Node root;
+    private int size;
+
+    private static class Node {
+        private Point2D p;      // the point
+        private RectHV rect;    // the axis-aligned rectangle corresponding to this node
+        private Node lb;        // the left/bottom subtree
+        private Node rt;        // the right/top subtree
+
+        private Node(Point2D p) {
+            this.p = p;
+            lb = null;
+            rt = null;
+        }
+    }
+
     /**
      * Constructs an empty set of points
      */
     public KdTree() {
+        root = null;
+        size = 0;
     }
 
     /**
@@ -23,6 +46,7 @@ public class KdTree {
      * @return true iff the set is empty
      */
     public boolean isEmpty() {
+        return root == null;
     }
 
     /**
@@ -31,6 +55,7 @@ public class KdTree {
      * @return number of points in the set
      */
     public int size() {
+        return size;
     }
 
     /**
@@ -39,6 +64,21 @@ public class KdTree {
      * @param p point to be added
      */
     public void insert(Point2D p) {
+        if (p == null) {
+            throw new IllegalArgumentException("insert called with null argument");
+        }
+        Node n = new Node(p);
+        root = insert(n, XCOOR);
+        size++;
+    }
+
+    private Node insert(Node n, boolean orientation) {
+        if (orientation == XCOOR) {
+
+        }
+        else { // if orientation == YCOOR
+
+        }
     }
 
     /**
