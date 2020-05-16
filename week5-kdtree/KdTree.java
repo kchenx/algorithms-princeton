@@ -13,7 +13,7 @@ import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
 
 public class KdTree {
-    // parameters
+    // parameters for 2D tree
     private static final double XMIN = 0;
     private static final double YMIN = 0;
     private static final double XMAX = 1;
@@ -24,8 +24,8 @@ public class KdTree {
     private int size;
 
     private static class Node {
-        private Point2D p;      // the point
-        private RectHV rect;    // the rectangle
+        private final Point2D p;      // the point
+        private final RectHV rect;    // the rectangle
         private Node lb;        // the left/bottom subtree
         private Node rt;        // the right/top subtree
 
@@ -91,7 +91,7 @@ public class KdTree {
         else if (cmp > 0 && isVertical(depth)) {
             n.rt = insert(n.rt, p, n.p.x(), ymin, xmax, ymax, depth + 1);
         }
-        else {
+        else if (cmp > 0) {
             n.rt = insert(n.rt, p, xmin, n.p.y(), xmax, ymax, depth + 1);
         }
         return n;
@@ -167,8 +167,23 @@ public class KdTree {
         if (rect == null) {
             throw new IllegalArgumentException("range called with null argument");
         }
-        Queue<Point2D> points = new Queue<>();
-        return points;
+        Queue<Point2D> q = new Queue<>();
+        range(root, rect, q);
+        return q;
+    }
+
+    private void range(Node n, RectHV rect, Queue<Point2D> q) {
+        // do not search rectangles that do not intersect
+        if (n == null || !rect.intersects(n.rect)) {
+            return;
+        }
+
+        if (rect.contains(n.p)) {
+            q.enqueue(n.p);
+        }
+
+        range(n.lb, rect, q);
+        range(n.rt, rect, q);
     }
 
     /**
@@ -181,7 +196,33 @@ public class KdTree {
         if (p == null) {
             throw new IllegalArgumentException("nearest called with null argument");
         }
-        return root.p;
+        return isEmpty() ? null : nearest(root, p, null, 0);
+    }
+
+    private Point2D nearest(Node n, Point2D p, Point2D nearest, int depth) {
+        // do not search rectangles farther from point than current closest point
+        if (n == null) return nearest;
+        if (nearest == null) nearest = n.p;
+        double sqdist = nearest.distanceSquaredTo(p);
+        if (n.rect.distanceSquaredTo(p) > sqdist) {
+            return nearest;
+        }
+
+        // update closest if necessary
+        if (n.p.distanceSquaredTo(p) < sqdist) {
+            nearest = n.p;
+        }
+
+        // optimization: search partition containing point first
+        if (comparePoints(n.p, p, depth) > 0) {
+            nearest = nearest(n.lb, p, nearest, depth + 1);
+            nearest = nearest(n.rt, p, nearest, depth + 1);
+        }
+        else {
+            nearest = nearest(n.rt, p, nearest, depth + 1);
+            nearest = nearest(n.lb, p, nearest, depth + 1);
+        }
+        return nearest;
     }
 
     /**
@@ -217,6 +258,5 @@ public class KdTree {
     // unit testing of the methods (optional)
     public static void main(String[] args) {
     }
-
 
 }
