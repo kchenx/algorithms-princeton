@@ -1,19 +1,20 @@
 /******************************************************************************
  *  Compilation:  javac PointSET.java
  *  Execution:
- *  Dependencies: Point2D.java RectHV.java
+ *  Dependencies: Point2D.java RectHV.java Queue.java
  *
  *  Represents a set of points in the unit square
  *
  ******************************************************************************/
 
 import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.RectHV;
 
-import java.util.ArrayList;
 import java.util.TreeSet;
 
 public class PointSET {
+    // set of points
     private final TreeSet<Point2D> set;
 
     /**
@@ -47,6 +48,9 @@ public class PointSET {
      * @param p point to be added
      */
     public void insert(Point2D p) {
+        if (p == null) {
+            throw new IllegalArgumentException("insert called with null argument");
+        }
         set.add(p);
     }
 
@@ -57,6 +61,9 @@ public class PointSET {
      * @return true iff the set contains `p`
      */
     public boolean contains(Point2D p) {
+        if (p == null) {
+            throw new IllegalArgumentException("contains called with null argument");
+        }
         return set.contains(p);
     }
 
@@ -76,10 +83,13 @@ public class PointSET {
      * @return all points that are inside the rectangle (or on the boundary)
      */
     public Iterable<Point2D> range(RectHV rect) {
-        ArrayList<Point2D> points = new ArrayList<>();
+        if (rect == null) {
+            throw new IllegalArgumentException("range called with null argument");
+        }
+        Queue<Point2D> points = new Queue<>();
         for (Point2D p : set) {
-            if (rect.contains((p))) {
-                points.add(p);
+            if (rect.contains(p)) {
+                points.enqueue(p);
             }
         }
         return points;
@@ -92,12 +102,16 @@ public class PointSET {
      * @return a nearest neighbor in the set to point p; null if the set is empty
      */
     public Point2D nearest(Point2D p) {
+        if (p == null) {
+            throw new IllegalArgumentException("nearest called with null argument");
+        }
         Point2D result = null;
         double sqdist = Double.POSITIVE_INFINITY;
         for (Point2D pt : set) {
-            if (p.distanceSquaredTo(pt) < sqdist) {
+            double tempsqdist = p.distanceSquaredTo(pt);
+            if (tempsqdist < sqdist) {
                 result = pt;
-                sqdist = p.distanceSquaredTo(pt);
+                sqdist = tempsqdist;
             }
         }
         return result;
